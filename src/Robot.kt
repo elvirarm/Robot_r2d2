@@ -1,31 +1,43 @@
-class Robot(nombre: String, posX: Int, posY: Int, direccion: String) {
+class Robot(private val nombre: String) {
 
-    val nombre = ""
-    var posX = 0
-    var posY = 0
+    private var posX = 0
+    private var posY = 0
+    private var direccion = Direccion.POSITIVEY
 
 
-
-    init {
-        this.posX = 0
-        this.posY = 0
-        var dirección = "PositiveY"
-
-        require(nombre.isNotEmpty()){"El nombre no puede estar vacío."}
+    fun mover(movimientos: IntArray){
+        for(pasos in movimientos){
+            if (pasos == 0) continue
+            when(direccion){
+                Direccion.POSITIVEY ->{
+                    posY += pasos
+                    //direccion = Direccion.NEGATIVEX
+                }
+                Direccion.NEGATIVEX ->{
+                    posX -= pasos
+                    //direccion = Direccion.NEGATIVEY
+                }
+                Direccion.NEGATIVEY ->{
+                    posY += pasos
+                    //direccion = Direccion.POSITIVEX
+                }
+                Direccion.POSITIVEX ->{
+                    posX += pasos
+                    //direccion = Direccion.POSITIVEY
+                }
+            }
+            direccion = Direccion.nuevaDir(direccion.ordinal)
+        }
     }
 
-    fun mover(movimientos: Array<Int>){
+    fun obtenerPosicion(): String {
 
+        return "($posX, $posY)"
     }
 
-    fun obtenerPosicion(): Array<Int>{
-        var posicion = arrayOf(posX, posY)
-
-        return posicion
-    }
-
-    fun obtenerDireccion(): String{
-
+    fun obtenerDireccion(): String {
+        return direccion.toString()
+        /*
         val direccion = arrayOf("PositiveX", "NegativeX", "PositiveY", "NegativeY")
         val direccionTemporal = ""
         for (paso in direccion){
@@ -33,9 +45,11 @@ class Robot(nombre: String, posX: Int, posY: Int, direccion: String) {
             return direccionTemporal
         }
 
+         */
+
     }
 
     override fun toString(): String {
-        return "R2D2 está en ${obtenerPosicion()} ${obtenerDireccion()}"
+        return "$nombre está en ${obtenerPosicion()} ${obtenerDireccion()}"
     }
 }
